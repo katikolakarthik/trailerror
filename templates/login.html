@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | TKR College</title>
     <style>
+        /* Global Styles */
         body {
             margin: 0;
             padding: 0;
@@ -14,6 +15,25 @@
             color: white;
         }
 
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .dark-mode-toggle:hover {
+            background: #f0f0f0;
+        }
+
+        /* Image Slider */
         .slider {
             position: relative;
             height: 40vh;
@@ -43,8 +63,23 @@
             animation-delay: 10s;
         }
 
+        .slider-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        /* Login Form */
         .login-container {
-            background: white;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
@@ -64,7 +99,6 @@
             margin-bottom: 10px;
             font-size: 24px;
             color: #004d99;
-            animation: fadeIn 2s ease-in-out;
         }
 
         .login-container input[type="text"],
@@ -99,6 +133,24 @@
             background: #660066;
         }
 
+        /* Embedded Branding */
+        .branding-section {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+        }
+
+        .branding-section h2 {
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+
+        .branding-section p {
+            font-size: 16px;
+        }
+
+        /* Video Section */
         .video-section {
             margin: 20px auto;
             text-align: center;
@@ -131,11 +183,15 @@
     </style>
 </head>
 <body>
+    <!-- Dark Mode Toggle -->
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙</button>
+
     <!-- Image Slider -->
     <div class="slider">
-        <img src="/static/campus.webp" alt="Campus Image 1">
-        <img src="/static/campus.webp" alt="Campus Image 2">
-        <img src="/static/campus.webp" alt="Campus Image 3">
+        <img src="/static/campus1.webp" alt="Campus Image 1">
+        <img src="/static/campus2.webp" alt="Campus Image 2">
+        <img src="/static/campus3.webp" alt="Campus Image 3">
+        <div class="slider-caption">Empowering Future Innovators</div>
     </div>
 
     <!-- Login Form -->
@@ -155,6 +211,13 @@
         </form>
     </div>
 
+    <!-- Branding Section -->
+    <div class="branding-section">
+        <h2>About TKR College</h2>
+        <p>TKR College is committed to excellence in education, innovation, and fostering future leaders.</p>
+        <p>Join us to experience world-class facilities and a vibrant learning environment.</p>
+    </div>
+
     <!-- Video Section -->
     <div class="video-section">
         <video controls>
@@ -162,5 +225,11 @@
             Your browser does not support the video tag.
         </video>
     </div>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+    </script>
 </body>
 </html>
