@@ -51,6 +51,31 @@ def questions():
     except Exception as e:
         flash(f"Error loading questions: {str(e)}", "error")
         return redirect(url_for("login"))
+def submit_exam():
+    response_data = []  # Initialize response_data as an empty list
+
+    # Loop through the user's answers
+    for idx, selected_answer in answers.items():
+        if selected_answer.get() == "":
+            messagebox.showwarning("Warning", f"Please answer Question {idx + 1}")
+            return
+
+        # Add the question and answer to response_data
+        response_data.append({
+            'Question': questions_df.iloc[idx]['Question'],
+            'Selected Answer': selected_answer.get(),
+            'Correct Answer': questions_df.iloc[idx]['Correct Answer'],
+            'Username': username  # Use the username of the logged-in user
+        })
+
+    # Save the responses to an Excel file or database
+    try:
+        responses_df = pd.DataFrame(response_data)
+        responses_df.to_excel("User_Responses.xlsx", index=False)
+        messagebox.showinfo("Quiz Completed", "Your responses have been submitted!")
+    except Exception as e:
+        messagebox.showerror("Error", f"Could not save responses: {str(e)}")
+
 from flask_mail import Mail, Message
 app = Flask(__name__)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
