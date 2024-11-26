@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login | TKR College</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background: linear-gradient(120deg, #2980b9, #8e44ad);
+            background: linear-gradient(120deg, #004d99, #660066);
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            color: white;
         }
 
         .login-container {
@@ -22,12 +23,18 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             text-align: center;
-            width: 300px;
+            width: 350px;
         }
 
         .login-container h1 {
+            margin-bottom: 10px;
+            font-size: 26px;
+            color: #004d99;
+        }
+
+        .login-container h2 {
             margin-bottom: 20px;
-            font-size: 24px;
+            font-size: 18px;
             color: #333;
         }
 
@@ -43,7 +50,7 @@
         }
 
         .login-container button {
-            background: #2980b9;
+            background: #004d99;
             color: white;
             padding: 10px;
             border: none;
@@ -54,7 +61,7 @@
         }
 
         .login-container button:hover {
-            background: #8e44ad;
+            background: #660066;
         }
 
         .login-container .error-message {
@@ -70,18 +77,48 @@
         .login-container a {
             display: block;
             margin-top: 15px;
-            color: #2980b9;
+            color: #004d99;
             text-decoration: none;
         }
 
         .login-container a:hover {
             text-decoration: underline;
         }
+
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+
+        .header img {
+            width: 80px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin: 5px 0;
+            color: #fff;
+        }
+
+        .header h2 {
+            font-size: 16px;
+            margin: 0;
+            color: #ddd;
+        }
     </style>
 </head>
 <body>
+    <div class="header">
+        <img src="/static/logo.png" alt="TKR College Logo">
+        <h1>TKR College of Engineering & Technology</h1>
+        <h2>Empowering Future Innovators</h2>
+    </div>
     <div class="login-container">
-        <h1>Welcome Back</h1>
+        <h1>Welcome to TKR Portal</h1>
+        <h2>Login to Access the Examination System</h2>
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
