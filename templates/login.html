@@ -10,102 +10,35 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background: linear-gradient(120deg, #004d99, #660066);
+            background: linear-gradient(120deg, #4B79A1, #283E51);
             overflow: auto;
             color: white;
         }
 
-        /* Dark Mode Toggle */
-        .dark-mode-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #fff;
-            border: none;
-            padding: 10px;
-            border-radius: 50%;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .dark-mode-toggle:hover {
-            background: #f0f0f0;
-        }
-
-        /* Image Slider */
-        .slider {
-            position: relative;
-            height: 40vh;
-            overflow: hidden;
-        }
-
-        .slider img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            animation: sliderAnimation 15s infinite;
-            position: absolute;
-        }
-
-        @keyframes sliderAnimation {
-            0% { opacity: 1; transform: scale(1); }
-            33% { opacity: 0; transform: scale(1.1); }
-            66% { opacity: 0; transform: scale(1.1); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        .slider img:nth-child(2) {
-            animation-delay: 5s;
-        }
-
-        .slider img:nth-child(3) {
-            animation-delay: 10s;
-        }
-
-        .slider-caption {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 16px;
-            text-align: center;
-        }
-
         /* Login Form */
         .login-container {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(10px);
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
             text-align: center;
             width: 90%;
             max-width: 400px;
-            margin: -60px auto 20px;
-            animation: fadeIn 2s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            margin: 10vh auto 20px;
         }
 
         .login-container h1 {
-            margin-bottom: 10px;
-            font-size: 24px;
-            color: #004d99;
+            margin-bottom: 20px;
+            font-size: 26px;
+            color: #283E51;
         }
 
         .login-container input[type="text"],
         .login-container input[type="password"] {
             width: 100%;
-            padding: 12px;
-            margin: 10px 0;
+            padding: 15px;
+            margin: 15px 0;
             border: 1px solid #ddd;
             border-radius: 5px;
             outline: none;
@@ -114,85 +47,91 @@
         }
 
         .login-container input:focus {
-            box-shadow: 0 0 5px #004d99;
+            box-shadow: 0 0 5px #4B79A1;
         }
 
         .login-container button {
-            background: #004d99;
+            background: #4B79A1;
             color: white;
-            padding: 12px;
+            padding: 15px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             width: 100%;
-            font-size: 16px;
+            font-size: 18px;
+            font-weight: bold;
             transition: background 0.3s;
         }
 
         .login-container button:hover {
-            background: #660066;
+            background: #283E51;
         }
 
-        /* Embedded Branding */
+        .login-container a {
+            display: block;
+            margin-top: 10px;
+            color: #4B79A1;
+            text-decoration: none;
+        }
+
+        .login-container a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #283E51;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        /* Header Image */
+        .header-image {
+            width: 100%;
+            height: 30vh;
+            background: url('/static/campus.webp') no-repeat center center/cover;
+        }
+
+        /* Branding Section */
         .branding-section {
             text-align: center;
             padding: 20px;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.7);
             color: white;
         }
 
         .branding-section h2 {
             margin-bottom: 10px;
-            font-size: 22px;
+            font-size: 24px;
         }
 
         .branding-section p {
             font-size: 16px;
         }
 
-        /* Video Section */
-        .video-section {
-            margin: 20px auto;
-            text-align: center;
-        }
-
-        .video-section video {
-            width: 90%;
-            max-width: 600px;
-            border-radius: 10px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-        }
-
         @media (max-width: 768px) {
             .login-container {
                 padding: 20px;
-                margin: -50px auto 10px;
-            }
-
-            .video-section video {
-                width: 100%;
+                margin: 15vh auto;
             }
         }
 
         @media (max-width: 480px) {
             .login-container {
                 padding: 15px;
-                margin: -40px auto 10px;
+                margin: 20vh auto;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Dark Mode Toggle -->
-    <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙</button>
-
-    <!-- Image Slider -->
-    <div class="slider">
-        <img src="/static/campus.webp" alt="Campus Image 1">
-        <img src="/static/campus2.jpg" alt="Campus Image 2">
-        <img src="/static/campus3.jpg" alt="Campus Image 3">
-        <div class="slider-caption">Empowering Future Innovators</div>
-    </div>
+    <!-- Header Image -->
+    <div class="header-image"></div>
 
     <!-- Login Form -->
     <div class="login-container">
@@ -209,6 +148,7 @@
             <input type="password" name="password" placeholder="Password" required>
             <button type="submit">Login</button>
         </form>
+        <a href="#">Forgot your password?</a>
     </div>
 
     <!-- Branding Section -->
@@ -218,24 +158,10 @@
         <p>Join us to experience world-class facilities and a vibrant learning environment.</p>
     </div>
 
-    <!-- Video Section -->
-    <div class="video-section">
-        <video controls>
-            <source src="/static/tkr.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-
-    <script>
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-        }
-    </script>
-    <!-- Footer Section -->
-    <footer style="background-color: red; color: white; text-align: center; padding: 10px 0; position: fixed; bottom: 0; width: 100%;">
+    <!-- Footer -->
+    <footer>
         <p>Copyright &copy; 2024 TKR College of Engineering & Technology. All Rights Reserved.</p>
-        <p>Designer, Developer & Maintenance - Mr. Md. Shakeel (TKRES),Mr. k. karthik</p>
+        <p>Designer, Developer & Maintenance - Mr. Md. Shakeel (TKRES), Mr. K. Karthik</p>
     </footer>
-
 </body>
 </html>
