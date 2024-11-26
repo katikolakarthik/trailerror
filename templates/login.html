@@ -9,95 +9,87 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(120deg, #4B79A1, #283E51);
-            color: white;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #4B79A1, #283E51);
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            justify-content: space-between;
             height: 100vh;
+            color: white;
         }
 
-        /* Header Slider */
-        .header-slider {
+        /* Main Container */
+        .container {
             width: 100%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-rows: 1fr auto auto;
+            gap: 20px;
+        }
+
+        /* Header Section */
+        .header {
             height: 25%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header-slider img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-        }
-
-        .header-slider img.active {
-            opacity: 1;
+            background: url('/static/campus.webp') no-repeat center center/cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         /* Login Form */
         .login-container {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            padding: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #283E51;
+            padding: 20px;
             border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            width: 90%;
-            max-width: 400px;
         }
 
         .login-container h1 {
-            margin-bottom: 20px;
-            font-size: 26px;
-            color: #283E51;
+            font-size: 24px;
+            margin-bottom: 15px;
         }
 
         .login-container input[type="text"],
         .login-container input[type="password"] {
-            width: 100%;
-            padding: 15px;
-            margin: 15px 0;
+            width: 90%;
+            max-width: 400px;
+            padding: 12px;
+            margin: 10px 0;
             border: 1px solid #ddd;
             border-radius: 5px;
-            outline: none;
             font-size: 16px;
-            transition: box-shadow 0.3s;
-        }
-
-        .login-container input:focus {
-            box-shadow: 0 0 5px #4B79A1;
+            outline: none;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .login-container button {
-            background: #4B79A1;
+            width: 90%;
+            max-width: 400px;
+            padding: 12px;
+            background: linear-gradient(90deg, #4B79A1, #283E51);
             color: white;
-            padding: 15px;
             border: none;
             border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
             font-size: 18px;
-            font-weight: bold;
+            cursor: pointer;
             transition: background 0.3s;
         }
 
         .login-container button:hover {
-            background: #283E51;
+            background: linear-gradient(90deg, #283E51, #4B79A1);
         }
 
         .login-container a {
-            display: block;
             margin-top: 10px;
             color: #4B79A1;
             text-decoration: none;
+            font-size: 14px;
         }
 
         .login-container a:hover {
@@ -105,98 +97,89 @@
         }
 
         /* Branding Section */
-        .branding-section {
+        .branding {
             text-align: center;
             padding: 10px;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.8);
             color: white;
+            border-radius: 10px;
             font-size: 14px;
         }
 
-        .branding-section h2 {
+        .branding h2 {
+            margin: 0 0 10px 0;
             font-size: 20px;
-            margin-bottom: 5px;
         }
 
-        .branding-section p {
-            font-size: 14px;
+        .branding p {
+            margin: 0;
         }
 
         /* Footer */
-        footer {
-            background-color: #283E51;
-            color: white;
+        .footer {
             text-align: center;
-            padding: 10px;
             font-size: 12px;
+            background: #283E51;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
         }
 
         @media (max-width: 768px) {
             .login-container {
-                padding: 20px;
+                padding: 15px;
             }
 
-            .branding-section h2 {
+            .login-container h1 {
+                font-size: 20px;
+            }
+
+            .branding h2 {
                 font-size: 18px;
             }
 
-            .branding-section p {
+            .branding p {
                 font-size: 12px;
             }
         }
-    </style>
-    <script>
-        // JavaScript for Image Slider
-        let currentSlide = 0;
-        const slides = [];
 
-        document.addEventListener("DOMContentLoaded", () => {
-            slides.push(...document.querySelectorAll(".header-slider img"));
-            setInterval(() => {
-                slides[currentSlide].classList.remove("active");
-                currentSlide = (currentSlide + 1) % slides.length;
-                slides[currentSlide].classList.add("active");
-            }, 4000);
-        });
-    </script>
+    </style>
 </head>
 <body>
-    <!-- Header Slider -->
-    <div class="header-slider">
-        <img src="/static/campus1.webp" alt="Campus Image 1" class="active">
-        <img src="/static/campus2.webp" alt="Campus Image 2">
-        <img src="/static/campus3.webp" alt="Campus Image 3">
-    </div>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header"></div>
 
-    <!-- Login Form -->
-    <div class="login-container">
-        <h1>Login to TKR Portal</h1>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <p class="{{ category }}-message">{{ message }}</p>
-            {% endfor %}
-        {% endif %}
-        {% endwith %}
-        <form method="POST">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit">Login</button>
-        </form>
-        <a href="#">Forgot your password?</a>
-    </div>
+        <!-- Login Section -->
+        <div class="login-container">
+            <h1>Login to TKR Portal</h1>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class="{{ category }}-message">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <form method="POST">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <a href="#">Forgot your password?</a>
+        </div>
 
-    <!-- Branding Section -->
-    <div class="branding-section">
-        <h2>About TKR College</h2>
-        <p>TKR College is committed to excellence in education, innovation, and fostering future leaders.</p>
-        <p>Join us to experience world-class facilities and a vibrant learning environment.</p>
-    </div>
+        <!-- Branding Section -->
+        <div class="branding">
+            <h2>About TKR College</h2>
+            <p>TKR College is committed to excellence in education, innovation, and fostering future leaders.</p>
+            <p>Join us to experience world-class facilities and a vibrant learning environment.</p>
+        </div>
 
-    <!-- Footer -->
-    <footer>
-        <p>Copyright &copy; 2024 TKR College of Engineering & Technology. All Rights Reserved.</p>
-        <p>Designer, Developer & Maintenance - Mr. Md. Shakeel (TKRES), Mr. K. Karthik</p>
-    </footer>
+        <!-- Footer Section -->
+        <div class="footer">
+            <p>Copyright &copy; 2024 TKR College of Engineering & Technology. All Rights Reserved.</p>
+            <p>Designer, Developer & Maintenance - Mr. Md. Shakeel (TKRES), Mr. K. Karthik</p>
+        </div>
+    </div>
 </body>
 </html>
