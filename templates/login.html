@@ -12,16 +12,39 @@
         }
 
         .header {
-            background-color: #D32F2F;
-            color: white;
-            padding: 20px;
-            text-align: center;
+  background-color: red;
+  color: white;
+  padding: 10px;
+  /* display: flex; */
+   /* align-items: cente ; */
+  /* justify-content: flex-end; */
+  font-size: 24px;
+  font-weight: bold;
+  padding-left: 25px;
+  gap: 15px;
+}
+
+.header img {
+  vertical-align: middle;
+  width: 40px;
+  height: 40px;
+  margin-right: 15px;
+
         }
 
-        .header img {
-            max-width: 80px;
-            margin-bottom: 10px;
-        }
+/* .marquee-container {
+    flex-grow: 1;
+    overflow: hidden;
+} */
+
+.marquee-container marquee {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    /* text-align: right; */
+    
+}
+
 
         .header h1 {
             font-size: 24px;
@@ -128,8 +151,12 @@
 
     <!-- Header -->
     <div class="header">
-        <img src="/static/logo.png" alt="TKR Logo">
-        <h1>T.K.R COLLEGE OF ENGINEERING & TECHNOLOGY</h1>
+         
+        <div class="marquee-container">
+            <marquee scrollamount="5"><img id="logo" src="/static/logo.png" alt="TKRCET Logo">TEEGALA KRISHNA REDDY COLLEGE OF ENGINEERING & TECHNOLOGY</marquee>
+        </div>
+
+        
     </div>
 
     <!-- Content -->
