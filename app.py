@@ -23,7 +23,7 @@ def connect_to_db():
         connection = mysql.connector.connect(
             host="localhost",        # e.g., "localhost" or your server IP
             user="root",           # Database username
-            password="",       # Database password
+            password="karthik",       # Database password
             database="exam_responses"       # Database name
         )
         return connection
