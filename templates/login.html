@@ -11,10 +11,28 @@
             font-family: Arial, sans-serif;
             background: linear-gradient(120deg, #004d99, #660066);
             height: 100vh;
+            overflow: auto;
+            color: white;
+        }
+
+        .hero-banner {
+            background: url('/static/campus.webp') no-repeat center center/cover;
+            height: 40vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            text-align: center;
             color: white;
+        }
+
+        .hero-banner h1 {
+            font-size: 32px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        .hero-banner h2 {
+            font-size: 18px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
         }
 
         .login-container {
@@ -25,6 +43,7 @@
             text-align: center;
             width: 90%;
             max-width: 400px;
+            margin: -50px auto 20px;
         }
 
         .login-container h1 {
@@ -86,29 +105,16 @@
             text-decoration: underline;
         }
 
-        .header {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+        .video-section {
+            margin: 20px auto;
             text-align: center;
         }
 
-        .header img {
-            width: 60px;
-            height: auto;
-        }
-
-        .header h1 {
-            font-size: 18px;
-            margin: 5px 0;
-            color: #fff;
-        }
-
-        .header h2 {
-            font-size: 12px;
-            margin: 0;
-            color: #ddd;
+        .video-section video {
+            width: 90%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         @media (max-width: 768px) {
@@ -118,51 +124,40 @@
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             }
 
-            .login-container h1 {
-                font-size: 20px;
+            .hero-banner h1 {
+                font-size: 24px;
             }
 
-            .login-container h2 {
+            .hero-banner h2 {
                 font-size: 14px;
             }
 
-            .header img {
-                width: 50px;
-            }
-
-            .header h1 {
-                font-size: 16px;
-            }
-
-            .header h2 {
-                font-size: 10px;
+            .video-section video {
+                width: 100%;
             }
         }
 
         @media (max-width: 480px) {
-            .header img {
-                width: 40px;
+            .hero-banner h1 {
+                font-size: 20px;
             }
 
-            .header h1 {
-                font-size: 14px;
-            }
-
-            .header h2 {
-                font-size: 9px;
+            .hero-banner h2 {
+                font-size: 12px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <img src="/static/logo.png" alt="TKR College Logo">
-        <h1>TKR College of Engineering & Technology</h1>
-        <h2>Empowering Future Innovators</h2>
+    <div class="hero-banner">
+        <div>
+            <h1>Welcome to TKR College</h1>
+            <h2>Empowering Future Innovators</h2>
+        </div>
     </div>
     <div class="login-container">
-        <h1>Welcome to TKR Portal</h1>
-        <h2>Login to Access the Examination System</h2>
+        <h1>Login to TKR Portal</h1>
+        <h2>Access the Examination System</h2>
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
@@ -176,6 +171,12 @@
             <button type="submit">Login</button>
         </form>
         <a href="#">Forgot your password?</a>
+    </div>
+    <div class="video-section">
+        <video controls>
+            <source src="/static/tkr.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
     </div>
 </body>
 </html>
