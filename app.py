@@ -52,5 +52,3 @@ def questions():
         flash(f"Error loading questions: {str(e)}", "error")
         return redirect(url_for("login"))
 
-if __name__ == "__main__":
-    app.run(debug=True)
