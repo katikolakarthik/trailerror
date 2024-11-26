@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Questions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Answer the Questions</h1>
+    <form method="post">
+        {% for question in questions %}
+            <div>
+                <p>{{ question['Question'] }}</p>
+                <label><input type="radio" name="{{ question['Question'] }}" value="A"> {{ question['Option A'] }}</label><br>
+                <label><input type="radio" name="{{ question['Question'] }}" value="B"> {{ question['Option B'] }}</label><br>
+                <label><input type="radio" name="{{ question['Question'] }}" value="C"> {{ question['Option C'] }}</label><br>
+                <label><input type="radio" name="{{ question['Question'] }}" value="D"> {{ question['Option D'] }}</label><br>
+            </div>
+        {% endfor %}
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
