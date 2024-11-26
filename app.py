@@ -51,4 +51,18 @@ def questions():
     except Exception as e:
         flash(f"Error loading questions: {str(e)}", "error")
         return redirect(url_for("login"))
+from flask_mail import Mail, Message
+app = Flask(__name__)
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = '22K91A6777@tkrcet.com'
+app.config['MAIL_PASSWORD'] = 'tkrcet@2022'
+
+mail = Mail(app)
+def send_responses_via_email(response_data):
+    msg = Message('User Responses', sender='your-email@gmail.com', recipients=['admin@example.com'])
+    msg.body = str(response_data)  # Format responses as needed
+    mail.send(msg)
+send_responses_via_email(response_data)
 
