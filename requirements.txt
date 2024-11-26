@@ -9,4 +9,4 @@ gunicorn==20.1.0  # Required for deployment to Heroku or Render
 psycopg2==2.9.6 
 numpy==1.23.5
 pandas==1.5.3
-
+mysql-connector-python==8.0.33
