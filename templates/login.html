@@ -19,11 +19,27 @@
             height: 100vh;
         }
 
-        /* Header Image */
-        .header-image {
+        /* Header Slider */
+        .header-slider {
             width: 100%;
             height: 25%;
-            background: url('/static/campus.webp') no-repeat center center/cover;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-slider img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .header-slider img.active {
+            opacity: 1;
         }
 
         /* Login Form */
@@ -129,10 +145,28 @@
             }
         }
     </style>
+    <script>
+        // JavaScript for Image Slider
+        let currentSlide = 0;
+        const slides = [];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            slides.push(...document.querySelectorAll(".header-slider img"));
+            setInterval(() => {
+                slides[currentSlide].classList.remove("active");
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add("active");
+            }, 4000);
+        });
+    </script>
 </head>
 <body>
-    <!-- Header Image -->
-    <div class="header-image"></div>
+    <!-- Header Slider -->
+    <div class="header-slider">
+        <img src="/static/campus1.webp" alt="Campus Image 1" class="active">
+        <img src="/static/campus2.webp" alt="Campus Image 2">
+        <img src="/static/campus3.webp" alt="Campus Image 3">
+    </div>
 
     <!-- Login Form -->
     <div class="login-container">
