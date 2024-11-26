@@ -46,23 +46,34 @@ def questions():
     username = session["username"]
     if request.method == "POST":
         try:
-            # Collect responses from form
-            responses = request.form.to_dict()
-
-            # Load correct answers from Excel
+            # Load correct answers from the questions file
             questions_df = pd.read_excel("questions.xlsx")
-            questions_dict = questions_df.set_index('Question')['Correct Answer'].to_dict()
+            correct_answers = questions_df.set_index('Question')['Correct Answer'].to_dict()
 
-            response_data = [
-                {
+            # Collect responses from the form
+            responses = request.form.to_dict()
+            total_marks = 0
+
+            # Validate and calculate total marks
+            response_data = []
+            for question, selected_answer in responses.items():
+                correct_answer = correct_answers.get(question, None)
+                is_correct = (selected_answer == correct_answer)
+                if is_correct:
+                    total_marks += 1
+                response_data.append({
                     "Username": username,
-                    "Question": q,
-                    "Selected Answer": a,
-                    "Correct Answer": questions_dict.get(q, None)  # Match question to correct answer
-                } for q, a in responses.items()
-            ]
+                    "Question": question,
+                    "Selected Answer": selected_answer,
+                    "Correct Answer": correct_answer,
+                    "Is Correct": is_correct
+                })
 
-            # Save responses to an Excel file
+            # Add total marks to each row
+            for row in response_data:
+                row["Total Marks"] = total_marks
+
+            # Save to Excel
             if os.path.exists(RESPONSES_FILE):
                 existing_df = pd.read_excel(RESPONSES_FILE)
                 new_df = pd.DataFrame(response_data)
@@ -74,7 +85,8 @@ def questions():
             flash("Responses submitted successfully!", "success")
             return redirect(url_for("login"))
         except Exception as e:
-            flash(f"Error saving responses: {str(e)}", "error")
+            flash(f"Error processing responses: {str(e)}", "error")
+            return redirect(url_for("login"))
 
     try:
         # Load questions from Excel
