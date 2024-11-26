@@ -5,181 +5,175 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | TKR College</title>
     <style>
-        /* Global Styles */
         body {
             margin: 0;
-            padding: 0;
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #4B79A1, #283E51);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            color: white;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
         }
 
-        /* Main Container */
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            display: grid;
-            grid-template-rows: 1fr auto auto;
-            gap: 20px;
-        }
-
-        /* Header Section */
         .header {
-            height: 25%;
-            width: 100%;
-            background: url('/static/campus.webp') no-repeat center center/cover;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Login Form */
-        .login-container {
-            background: rgba(255, 255, 255, 0.9);
-            color: #283E51;
+            background-color: #D32F2F;
+            color: white;
             padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             text-align: center;
         }
 
-        .login-container h1 {
+        .header img {
+            max-width: 80px;
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
             font-size: 24px;
+            margin: 5px 0;
+        }
+
+        .content {
+            margin: 20px auto;
+            width: 90%;
+            max-width: 1200px;
+        }
+
+        .about-campus {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .about-campus img {
+            width: 100%;
+            border-radius: 10px;
             margin-bottom: 15px;
         }
 
-        .login-container input[type="text"],
-        .login-container input[type="password"] {
-            width: 90%;
-            max-width: 400px;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            outline: none;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .login-container button {
-            width: 90%;
-            max-width: 400px;
-            padding: 12px;
-            background: linear-gradient(90deg, #4B79A1, #283E51);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .login-container button:hover {
-            background: linear-gradient(90deg, #283E51, #4B79A1);
-        }
-
-        .login-container a {
-            margin-top: 10px;
-            color: #4B79A1;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .login-container a:hover {
-            text-decoration: underline;
-        }
-
-        /* Branding Section */
-        .branding {
-            text-align: center;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            border-radius: 10px;
-            font-size: 14px;
-        }
-
-        .branding h2 {
-            margin: 0 0 10px 0;
+        .about-campus h2 {
+            color: #7B1FA2;
             font-size: 20px;
         }
 
-        .branding p {
-            margin: 0;
+        .about-campus p {
+            line-height: 1.6;
+            color: #555;
         }
 
-        /* Footer */
-        .footer {
+        .vision-mission {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .vision-mission .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .vision-mission .card h3 {
+            color: #7B1FA2;
+            margin-bottom: 10px;
+        }
+
+        .login-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        .login-container h3 {
+            color: #333;
             text-align: center;
-            font-size: 12px;
-            background: #283E51;
+            margin-bottom: 20px;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .login-container button {
+            background-color: #7B1FA2;
             color: white;
             padding: 10px;
-            border-radius: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            cursor: pointer;
         }
 
-        @media (max-width: 768px) {
-            .login-container {
-                padding: 15px;
-            }
+        .login-container button:hover {
+            background-color: #6A1B9A;
+        }
 
-            .login-container h1 {
-                font-size: 20px;
-            }
-
-            .branding h2 {
-                font-size: 18px;
-            }
-
-            .branding p {
-                font-size: 12px;
-            }
+        .footer {
+            background-color: #D32F2F;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
         }
 
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header Section -->
-        <div class="header"></div>
 
-        <!-- Login Section -->
+    <!-- Header -->
+    <div class="header">
+        <img src="/static/logo.png" alt="TKR Logo">
+        <h1>T.K.R COLLEGE OF ENGINEERING & TECHNOLOGY</h1>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+        <!-- About Campus -->
+        <div class="about-campus">
+            <img src="/static/campus.jpg" alt="TKR Campus">
+            <h2>About TKRCET Campus</h2>
+            <p>TKR College of Engineering and Technology - a modern temple of learning, an off shoot of the TKR Educational Society was established in the year 2002 in a sprawling, lush green 20 acre campus at Meerpet, Hyderabad. The college provides a serene and tranquil environment to the students, boosting their mental potential and preparing them in all aspects to face the cut-throat global competition with a smile on the face and emerge victorious.</p>
+            <p>Sri Teegala Krishna Reddy, the Mayor of Hyderabad, is the founder chairman of TKR Educational Society. A Philanthropist by nature, "the friend of man, to vice alone of foe", and an urge to see our students excelling themselves in all fields prompted him to start the educational society; making it easy for education to be within arm's length of even a rural student and providing them with an independent and easy in the for pursuing their dreams and making them come true and in the process upholding moral and ethical values.</p>
+        </div>
+
+        <!-- Vision and Mission -->
+        <div class="vision-mission">
+            <div class="card">
+                <h3>Institution Vision</h3>
+                <p>The Institution endeavours towards imparting quality education with ethical values and strives to make students technically competent to reach heights and make our nation self-reliant and globally recognized. Through innovative teaching methods and industry collaborations, we foster a culture of innovation, entrepreneurship, and social responsibility.</p>
+            </div>
+            <div class="card">
+                <h3>Institution Mission</h3>
+                <p>The Institution is committed and dedicated to mould the students into quality engineers and technologists with aplomb by providing world-class scientific and technical education through:</p>
+                <ul>
+                    <li>Ensuring excellent branch-wise infrastructural facilities with eminent and qualified faculty.</li>
+                    <li>Making the institute a research/resource centre to enhance scope for consultancy and R & D.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Login Form -->
         <div class="login-container">
-            <h1>Login to TKR Portal</h1>
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <p class="{{ category }}-message">{{ message }}</p>
-                {% endfor %}
-            {% endif %}
-            {% endwith %}
-            <form method="POST">
-                <input type="text" name="username" placeholder="Username" required>
-                <input type="password" name="password" placeholder="Password" required>
+            <h3>Login</h3>
+            <form>
+                <input type="text" placeholder="Username" required>
+                <input type="password" placeholder="Password" required>
                 <button type="submit">Login</button>
             </form>
-            <a href="#">Forgot your password?</a>
-        </div>
-
-        <!-- Branding Section -->
-        <div class="branding">
-            <h2>About TKR College</h2>
-            <p>TKR College is committed to excellence in education, innovation, and fostering future leaders.</p>
-            <p>Join us to experience world-class facilities and a vibrant learning environment.</p>
-        </div>
-
-        <!-- Footer Section -->
-        <div class="footer">
-            <p>Copyright &copy; 2024 TKR College of Engineering & Technology. All Rights Reserved.</p>
-            <p>Designer, Developer & Maintenance - Mr. Md. Shakeel (TKRES), Mr. K. Karthik</p>
         </div>
     </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Copyright &copy; 2024 TKR College of Engineering & Technology. All Rights Reserved.</p>
+        <p>Designer, Developer & Maintenance - Mr. Md. Shakeel (TKRES)</p>
+    </div>
+
 </body>
 </html>
