@@ -48,12 +48,17 @@ def questions():
         try:
             # Collect responses from form
             responses = request.form.to_dict()
+
+            # Load correct answers from Excel
+            questions_df = pd.read_excel("questions.xlsx")
+            questions_dict = questions_df.set_index('Question')['Correct Answer'].to_dict()
+
             response_data = [
                 {
                     "Username": username,
                     "Question": q,
                     "Selected Answer": a,
-                    "Correct Answer": None  # Add correct answers if available
+                    "Correct Answer": questions_dict.get(q, None)  # Match question to correct answer
                 } for q, a in responses.items()
             ]
 
