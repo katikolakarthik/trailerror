@@ -114,11 +114,11 @@
             <div class="question-container">
                 <span class="question-number">{{ loop.index }}</span>
                 <div class="question-text">
-                    <p class="question">{{ question['Question'] }}</p>
-                    <label><input type="radio" name="{{ question['Question'] }}" value="A"> A. {{ question['Option A'] }}</label>
-                    <label><input type="radio" name="{{ question['Question'] }}" value="B"> B. {{ question['Option B'] }}</label>
-                    <label><input type="radio" name="{{ question['Question'] }}" value="C"> C. {{ question['Option C'] }}</label>
-                    <label><input type="radio" name="{{ question['Question'] }}" value="D"> D. {{ question['Option D'] }}</label>
+                    <p class="question">{{ question['Question'] }}</p><br>
+                    <label><input type="radio" name="{{ question['Question'] }}" value="A"> A. {{ question['Option A'] }}</label><br>
+                    <label><input type="radio" name="{{ question['Question'] }}" value="B"> B. {{ question['Option B'] }}</label><br>
+                    <label><input type="radio" name="{{ question['Question'] }}" value="C"> C. {{ question['Option C'] }}</label><br>
+                    <label><input type="radio" name="{{ question['Question'] }}" value="D"> D. {{ question['Option D'] }}</label><br>
                 </div>
             </div>
         {% endfor %}
