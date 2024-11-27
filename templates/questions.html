@@ -2,12 +2,86 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Questions</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(120deg, #4B79A1, #283E51);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #FFD700;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 800px;
+        }
+
+        form div {
+            margin-bottom: 15px;
+        }
+
+        form div p {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        form label {
+            display: block;
+            margin: 5px 0;
+            color: #555;
+            font-size: 16px;
+        }
+
+        button {
+            background: #4B79A1;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            display: block;
+            margin: 20px auto;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #283E51;
+        }
+
+        .alert {
+            color: #D8000C;
+            background-color: #FFBABA;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Answer the Questions</h1>
-    <form method="post">
+    <h1>Answer All The Questions</h1>
+    <form method="post" id="questionsForm" onsubmit="return validateForm()">
         {% for question in questions %}
             <div>
                 <p>{{ question['Question'] }}</p>
@@ -19,5 +93,31 @@
         {% endfor %}
         <button type="submit">Submit</button>
     </form>
+
+    <script>
+        function validateForm() {
+            const form = document.getElementById('questionsForm');
+            const inputs = form.querySelectorAll('input[type="radio"]');
+            const questions = {};
+
+            // Collect selected answers
+            inputs.forEach(input => {
+                if (input.checked) {
+                    questions[input.name] = true;
+                }
+            });
+
+            // Ensure every question has an answer
+            const unanswered = Array.from(form.querySelectorAll('div p')).filter(q => !questions[q.textContent]);
+            if (unanswered.length > 0) {
+                alert('Please answer all the questions before submitting.');
+                return false;
+            }
+
+            // Show success alert
+            alert('Exam submitted successfully!');
+            return true;
+        }
+    </script>
 </body>
 </html>
