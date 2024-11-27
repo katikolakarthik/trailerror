@@ -36,15 +36,30 @@
 
         form div {
             margin-bottom: 15px;
-            display: flex;
-            align-items: flex-start;
+        }
+
+        .question-container {
+            margin-bottom: 15px;
+        }
+
+        .question-number {
+            background: #FFD700;
+            color: #333;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
         }
 
         .question {
+            display: inline;
             font-size: 18px;
             font-weight: bold;
             color: #333;
-            margin-bottom: 10px;
         }
 
         form label {
@@ -71,40 +86,6 @@
         button:hover {
             background: #283E51;
         }
-
-        .alert {
-            color: #D8000C;
-            background-color: #FFBABA;
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        .question-number {
-            background: #FFD700;
-            color: #333;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 10px;
-            flex-shrink: 0;
-        }
-
-        .question-container {
-            display: flex;
-            flex-direction: row;
-            align-items: flex-start;
-        }
-
-        .question-text {
-            flex-grow: 1;
-        }
-
     </style>
 </head>
 <body>
@@ -113,13 +94,11 @@
         {% for question in questions %}
             <div class="question-container">
                 <span class="question-number">{{ loop.index }}</span>
-                <div class="question-text">
-                    <p class="question">{{ question['Question'] }}</p><br>
-                    <label><input type="radio" name="{{ question['Question'] }}" value="A"> A. {{ question['Option A'] }}</label><br>
-                    <label><input type="radio" name="{{ question['Question'] }}" value="B"> B. {{ question['Option B'] }}</label><br>
-                    <label><input type="radio" name="{{ question['Question'] }}" value="C"> C. {{ question['Option C'] }}</label><br>
-                    <label><input type="radio" name="{{ question['Question'] }}" value="D"> D. {{ question['Option D'] }}</label><br>
-                </div>
+                <span class="question">{{ question['Question'] }}</span>
+                <label><input type="radio" name="{{ question['Question'] }}" value="A"> A. {{ question['Option A'] }}</label>
+                <label><input type="radio" name="{{ question['Question'] }}" value="B"> B. {{ question['Option B'] }}</label>
+                <label><input type="radio" name="{{ question['Question'] }}" value="C"> C. {{ question['Option C'] }}</label>
+                <label><input type="radio" name="{{ question['Question'] }}" value="D"> D. {{ question['Option D'] }}</label>
             </div>
         {% endfor %}
         <button type="submit">Submit</button>
@@ -139,7 +118,7 @@
             });
 
             // Ensure every question has an answer
-            const unanswered = Array.from(form.querySelectorAll('p.question')).filter(q => !questions[q.textContent]);
+            const unanswered = Array.from(form.querySelectorAll('span.question')).filter(q => !questions[q.textContent]);
             if (unanswered.length > 0) {
                 alert('Please answer all the questions before submitting.');
                 return false;
