@@ -36,12 +36,16 @@
 
         form div {
             margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
         }
 
         form div p {
             font-size: 18px;
             font-weight: bold;
             color: #333;
+            margin-right: 10px;
+            flex-shrink: 0;
         }
 
         form label {
@@ -77,6 +81,24 @@
             border-radius: 5px;
             text-align: center;
         }
+
+        .question-number {
+            background: #FFD700;
+            color: #333;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .question-content {
+            flex-grow: 1;
+        }
+
     </style>
 </head>
 <body>
@@ -84,11 +106,14 @@
     <form method="post" id="questionsForm" onsubmit="return validateForm()">
         {% for question in questions %}
             <div>
-                <p>{{ question['Question'] }}</p>
-                <label><input type="radio" name="{{ question['Question'] }}" value="A"> {{ question['Option A'] }}</label><br>
-                <label><input type="radio" name="{{ question['Question'] }}" value="B"> {{ question['Option B'] }}</label><br>
-                <label><input type="radio" name="{{ question['Question'] }}" value="C"> {{ question['Option C'] }}</label><br>
-                <label><input type="radio" name="{{ question['Question'] }}" value="D"> {{ question['Option D'] }}</label><br>
+                <span class="question-number">{{ loop.index }}</span>
+                <div class="question-content">
+                    <p>{{ question['Question'] }}</p>
+                    <label><input type="radio" name="{{ question['Question'] }}" value="A"> {{ question['Option A'] }}</label><br>
+                    <label><input type="radio" name="{{ question['Question'] }}" value="B"> {{ question['Option B'] }}</label><br>
+                    <label><input type="radio" name="{{ question['Question'] }}" value="C"> {{ question['Option C'] }}</label><br>
+                    <label><input type="radio" name="{{ question['Question'] }}" value="D"> {{ question['Option D'] }}</label><br>
+                </div>
             </div>
         {% endfor %}
         <button type="submit">Submit</button>
