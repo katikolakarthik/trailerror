@@ -17,7 +17,11 @@ submission_status = {}
 BRANCH_CONFIG = {
     "datascience": {"credentials": "datasciencecredentials.xlsx", "questions": "datasciencequestions.xlsx"},
     "csm": {"credentials": "csmcredentials.xlsx", "questions": "csmquestions.xlsx"},
-    # Add other branches as needed
+    "cse": {"credentials": "csecredentials.xlsx", "questions": "csequestions.xlsx"},
+    "it": {"credentials": "itcredentials.xlsx", "questions": "itquestions.xlsx"},
+    "ece": {"credentials": "ececredentials.xlsx", "questions": "ecequestions.xlsx"},
+    "eee": {"credentials": "eeecredentials.xlsx", "questions": "eeequestions.xlsx"},
+    "ce": {"credentials": "cecredentials.xlsx", "questions": "cequestions.xlsx"}
 }
 
 # Route for login
@@ -121,8 +125,25 @@ def questions():
         # Load branch-specific questions
         questions_df = pd.read_excel(questions_file)
         questions = questions_df.to_dict(orient="records")
-        return render_template("questions.html", questions=questions, timer_seconds=300)  # Pass timer to template
+        return render_template("questions.html", questions=questions)
     except Exception as e:
         flash(f"Error loading questions for {branch}: {str(e)}", "error")
         return redirect(url_for("login"))
 
+# Route to download responses file for a specific branch
+@app.route("/download-responses/<branch>")
+def download_responses(branch):
+    if branch not in BRANCH_CONFIG:
+        flash("Invalid branch.", "error")
+        return redirect(url_for("login"))
+
+    try:
+        response_file = os.path.join(RESPONSES_DIR, f"{branch}_responses.xlsx")
+        if os.path.exists(response_file):
+            return send_file(response_file, as_attachment=True)
+        else:
+            flash(f"No responses file available for {branch}.", "error")
+            return redirect(url_for("login"))
+    except Exception as e:
+        flash(f"Error downloading file for {branch}: {str(e)}", "error")
+        return redirect(url_for("login"))
