@@ -6,8 +6,20 @@ import os
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
 
-# File path for storing responses
-RESPONSES_FILE = "responses.xlsx"
+# Directory for storing responses per branch
+RESPONSES_DIR = "responses"
+os.makedirs(RESPONSES_DIR, exist_ok=True)
+
+# Branch-specific configuration
+BRANCH_CONFIG = {
+    "datascience": {"credentials": "datasciencecredentials.xlsx", "questions": "datasciencequestions.xlsx"},
+    "csm": {"credentials": "csmcredentials.xlsx", "questions": "csmquestions.xlsx"},
+    "cse": {"credentials": "csecredentials.xlsx", "questions": "csequestions.xlsx"},
+    "it": {"credentials": "itcredentials.xlsx", "questions": "itquestions.xlsx"},
+    "ece": {"credentials": "ececredentials.xlsx", "questions": "ecequestions.xlsx"},
+    "eee": {"credentials": "eeecredentials.xlsx", "questions": "eeequestions.xlsx"},
+    "ce": {"credentials": "cecredentials.xlsx", "questions": "cequestions.xlsx"}
+}
 
 # Route for login
 @app.route("/", methods=["GET", "POST"])
@@ -16,38 +28,46 @@ def login():
         username = request.form["username"].strip().lower()
         password = request.form["password"].strip()
 
-        # Load credentials from Excel
-        try:
-            credentials_df = pd.read_excel("credentials.xlsx")
-            credentials_df['Username'] = credentials_df['Username'].fillna('').str.lower()
-            credentials_df['Password'] = credentials_df['Password'].fillna('')
+        # Determine the branch based on the username
+        branch = None
+        for b, config in BRANCH_CONFIG.items():
+            try:
+                credentials_df = pd.read_excel(config["credentials"])
+                credentials_df['Username'] = credentials_df['Username'].fillna('').str.lower()
+                credentials_df['Password'] = credentials_df['Password'].fillna('')
 
-            user_data = credentials_df[credentials_df['Username'] == username]
-            if not user_data.empty:
-                stored_password = user_data.iloc[0]['Password']
-                if password == stored_password:
-                    session["username"] = username
-                    return redirect(url_for("questions"))
-                else:
-                    flash("Invalid password.", "error")
-            else:
-                flash("Username not found.", "error")
-        except Exception as e:
-            flash(f"Error reading credentials: {str(e)}", "error")
+                user_data = credentials_df[credentials_df['Username'] == username]
+                if not user_data.empty:
+                    stored_password = user_data.iloc[0]['Password']
+                    if password == stored_password:
+                        branch = b
+                        break
+            except Exception as e:
+                flash(f"Error reading credentials for {b}: {str(e)}", "error")
+
+        if branch:
+            session["username"] = username
+            session["branch"] = branch
+            return redirect(url_for("questions"))
+        else:
+            flash("Invalid username or password.", "error")
 
     return render_template("login.html")
 
 # Route for questions
 @app.route("/questions", methods=["GET", "POST"])
 def questions():
-    if "username" not in session:
+    if "username" not in session or "branch" not in session:
         return redirect(url_for("login"))
 
     username = session["username"]
+    branch = session["branch"]
+    questions_file = BRANCH_CONFIG[branch]["questions"]
+
     if request.method == "POST":
         try:
-            # Load correct answers from the questions file
-            questions_df = pd.read_excel("questions.xlsx")
+            # Load correct answers from the branch-specific questions file
+            questions_df = pd.read_excel(questions_file)
             correct_answers = questions_df.set_index('Question')['Correct Answer'].to_dict()
 
             # Collect responses from the form
@@ -73,14 +93,15 @@ def questions():
             for row in response_data:
                 row["Total Marks"] = total_marks
 
-            # Save to Excel
-            if os.path.exists(RESPONSES_FILE):
-                existing_df = pd.read_excel(RESPONSES_FILE)
+            # Save responses to branch-specific file
+            response_file = os.path.join(RESPONSES_DIR, f"{branch}_responses.xlsx")
+            if os.path.exists(response_file):
+                existing_df = pd.read_excel(response_file)
                 new_df = pd.DataFrame(response_data)
                 combined_df = pd.concat([existing_df, new_df], ignore_index=True)
-                combined_df.to_excel(RESPONSES_FILE, index=False)
+                combined_df.to_excel(response_file, index=False)
             else:
-                pd.DataFrame(response_data).to_excel(RESPONSES_FILE, index=False)
+                pd.DataFrame(response_data).to_excel(response_file, index=False)
 
             flash("Responses submitted successfully!", "success")
             return redirect(url_for("login"))
@@ -89,24 +110,29 @@ def questions():
             return redirect(url_for("login"))
 
     try:
-        # Load questions from Excel
-        questions_df = pd.read_excel("questions.xlsx")
+        # Load branch-specific questions
+        questions_df = pd.read_excel(questions_file)
         questions = questions_df.to_dict(orient="records")
         return render_template("questions.html", questions=questions)
     except Exception as e:
-        flash(f"Error loading questions: {str(e)}", "error")
+        flash(f"Error loading questions for {branch}: {str(e)}", "error")
         return redirect(url_for("login"))
 
-# Route to download responses file
-@app.route("/download-responses")
-def download_responses():
+# Route to download responses file for a specific branch
+@app.route("/download-responses/<branch>")
+def download_responses(branch):
+    if branch not in BRANCH_CONFIG:
+        flash("Invalid branch.", "error")
+        return redirect(url_for("login"))
+
     try:
-        if os.path.exists(RESPONSES_FILE):
-            return send_file(RESPONSES_FILE, as_attachment=True)
+        response_file = os.path.join(RESPONSES_DIR, f"{branch}_responses.xlsx")
+        if os.path.exists(response_file):
+            return send_file(response_file, as_attachment=True)
         else:
-            flash("No responses file available.", "error")
+            flash(f"No responses file available for {branch}.", "error")
             return redirect(url_for("login"))
     except Exception as e:
-        flash(f"Error downloading file: {str(e)}", "error")
+        flash(f"Error downloading file for {branch}: {str(e)}", "error")
         return redirect(url_for("login"))
 
