@@ -85,14 +85,15 @@ def questions():
 
             # Validate and calculate total marks
             response_data = []
-            for question, selected_answer in responses.items():
-                correct_answer = correct_answers.get(question, None)
+            for question in questions_df.to_dict(orient="records"):
+                selected_answer = responses.get(question["Question"], "Not Answered")
+                correct_answer = question.get("Correct Answer", None)
                 is_correct = (selected_answer == correct_answer)
                 if is_correct:
                     total_marks += 1
                 response_data.append({
                     "Username": username,
-                    "Question": question,
+                    "Question": question["Question"],
                     "Selected Answer": selected_answer,
                     "Correct Answer": correct_answer,
                     "Is Correct": is_correct
@@ -147,3 +148,4 @@ def download_responses(branch):
     except Exception as e:
         flash(f"Error downloading file for {branch}: {str(e)}", "error")
         return redirect(url_for("login"))
+
