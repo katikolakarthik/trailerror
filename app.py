@@ -26,7 +26,7 @@ BRANCH_CONFIG = {
 # Timer for automatic submission
 def start_timer(username, branch):
     def submit_after_timeout():
-        time.sleep(300)  # 5 minutes timer
+        time.sleep(60)  # 5 minutes timer
         try:
             # Auto-submit responses
             questions_file = BRANCH_CONFIG[branch]["questions"]
@@ -153,7 +153,7 @@ def questions():
         # Load branch-specific questions
         questions_df = pd.read_excel(questions_file)
         questions = questions_df.to_dict(orient="records")
-        return render_template("questions.html", questions=questions)
+        return render_template("questions.html", questions=questions, timer_seconds=300)  # Pass timer to template
     except Exception as e:
         flash(f"Error loading questions for {branch}: {str(e)}", "error")
         return redirect(url_for("login"))
@@ -175,3 +175,5 @@ def download_responses(branch):
     except Exception as e:
         flash(f"Error downloading file for {branch}: {str(e)}", "error")
         return redirect(url_for("login"))
+
+
