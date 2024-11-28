@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file
 import pandas as pd
 import os
-import threading
-import time
 
 # Initialize the Flask app
 app = Flask(__name__)
@@ -12,53 +10,15 @@ app.secret_key = "your_secret_key"
 RESPONSES_DIR = "responses"
 os.makedirs(RESPONSES_DIR, exist_ok=True)
 
+# Store submission status in session
+submission_status = {}
+
 # Branch-specific configuration
 BRANCH_CONFIG = {
     "datascience": {"credentials": "datasciencecredentials.xlsx", "questions": "datasciencequestions.xlsx"},
     "csm": {"credentials": "csmcredentials.xlsx", "questions": "csmquestions.xlsx"},
-    "cse": {"credentials": "csecredentials.xlsx", "questions": "csequestions.xlsx"},
-    "it": {"credentials": "itcredentials.xlsx", "questions": "itquestions.xlsx"},
-    "ece": {"credentials": "ececredentials.xlsx", "questions": "ecequestions.xlsx"},
-    "eee": {"credentials": "eeecredentials.xlsx", "questions": "eeequestions.xlsx"},
-    "ce": {"credentials": "cecredentials.xlsx", "questions": "cequestions.xlsx"}
+    # Add other branches as needed
 }
-
-# Timer for automatic submission
-def start_timer(username, branch):
-    def submit_after_timeout():
-        time.sleep(60)  # 5 minutes timer
-        try:
-            # Auto-submit responses
-            questions_file = BRANCH_CONFIG[branch]["questions"]
-            questions_df = pd.read_excel(questions_file)
-            questions = questions_df.to_dict(orient="records")
-            response_data = []
-
-            for question in questions:
-                response_data.append({
-                    "Username": username,
-                    "Question": question["Question"],
-                    "Selected Answer": "Not Answered",
-                    "Correct Answer": question.get("Correct Answer", None),
-                    "Is Correct": False
-                })
-
-            # Save to branch-specific file
-            response_file = os.path.join(RESPONSES_DIR, f"{branch}_responses.xlsx")
-            if os.path.exists(response_file):
-                existing_df = pd.read_excel(response_file)
-                new_df = pd.DataFrame(response_data)
-                combined_df = pd.concat([existing_df, new_df], ignore_index=True)
-                combined_df.to_excel(response_file, index=False)
-            else:
-                pd.DataFrame(response_data).to_excel(response_file, index=False)
-
-            print(f"Responses for {username} in branch {branch} auto-submitted.")
-        except Exception as e:
-            print(f"Error during auto-submit: {str(e)}")
-
-    thread = threading.Thread(target=submit_after_timeout)
-    thread.start()
 
 # Route for login
 @app.route("/", methods=["GET", "POST"])
@@ -85,9 +45,14 @@ def login():
                 flash(f"Error reading credentials for {b}: {str(e)}", "error")
 
         if branch:
+            # Check if user has already submitted
+            if submission_status.get(username):
+                flash("You have already submitted your exam. You cannot log in again.", "error")
+                return redirect(url_for("login"))
+
             session["username"] = username
             session["branch"] = branch
-            start_timer(username, branch)  # Start the timer for auto-submission
+            submission_status[username] = False  # Mark as not submitted yet
             return redirect(url_for("questions"))
         else:
             flash("Invalid username or password.", "error")
@@ -143,6 +108,9 @@ def questions():
             else:
                 pd.DataFrame(response_data).to_excel(response_file, index=False)
 
+            # Mark user as submitted
+            submission_status[username] = True
+
             flash("Responses submitted successfully!", "success")
             return redirect(url_for("login"))
         except Exception as e:
@@ -157,23 +125,4 @@ def questions():
     except Exception as e:
         flash(f"Error loading questions for {branch}: {str(e)}", "error")
         return redirect(url_for("login"))
-
-# Route to download responses file for a specific branch
-@app.route("/download-responses/<branch>")
-def download_responses(branch):
-    if branch not in BRANCH_CONFIG:
-        flash("Invalid branch.", "error")
-        return redirect(url_for("login"))
-
-    try:
-        response_file = os.path.join(RESPONSES_DIR, f"{branch}_responses.xlsx")
-        if os.path.exists(response_file):
-            return send_file(response_file, as_attachment=True)
-        else:
-            flash(f"No responses file available for {branch}.", "error")
-            return redirect(url_for("login"))
-    except Exception as e:
-        flash(f"Error downloading file for {branch}: {str(e)}", "error")
-        return redirect(url_for("login"))
-
 
