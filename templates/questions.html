@@ -25,6 +25,13 @@
             margin-bottom: 20px;
         }
 
+        .timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 20px;
+        }
+
         form {
             background: rgba(255, 255, 255, 0.9);
             padding: 20px;
@@ -90,7 +97,8 @@
 </head>
 <body>
     <h1>Answer All The Questions</h1>
-    <form method="post" id="questionsForm" onsubmit="return validateForm()">
+    <div class="timer" id="timer">Time Remaining: 5:00</div>
+    <form method="post" id="questionsForm" onsubmit="return validateForm()"> 
         {% for question in questions %}
             <div class="question-container">
                 <span class="question-number">{{ loop.index }}</span>
@@ -105,6 +113,28 @@
     </form>
 
     <script>
+        // Timer functionality
+        let timerSeconds = 60; // 5 minutes
+        const timerElement = document.getElementById('timer');
+
+        function startTimer() {
+            const interval = setInterval(() => {
+                const minutes = Math.floor(timerSeconds / 60);
+                const seconds = timerSeconds % 60;
+                timerElement.textContent = `Time Remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                timerSeconds--;
+
+                if (timerSeconds < 0) {
+                    clearInterval(interval);
+                    alert('Time is up! Submitting your responses automatically.');
+                    document.getElementById('questionsForm').submit();
+                }
+            }, 1000);
+        }
+
+        startTimer();
+
+        // Validation to ensure all questions are answered
         function validateForm() {
             const form = document.getElementById('questionsForm');
             const inputs = form.querySelectorAll('input[type="radio"]');
