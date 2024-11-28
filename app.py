@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file
 import pandas as pd
 import os
+import threading
+import time
 
 # Initialize the Flask app
 app = Flask(__name__)
@@ -20,6 +22,43 @@ BRANCH_CONFIG = {
     "eee": {"credentials": "eeecredentials.xlsx", "questions": "eeequestions.xlsx"},
     "ce": {"credentials": "cecredentials.xlsx", "questions": "cequestions.xlsx"}
 }
+
+# Timer for automatic submission
+def start_timer(username, branch):
+    def submit_after_timeout():
+        time.sleep(300)  # 5 minutes timer
+        try:
+            # Auto-submit responses
+            questions_file = BRANCH_CONFIG[branch]["questions"]
+            questions_df = pd.read_excel(questions_file)
+            questions = questions_df.to_dict(orient="records")
+            response_data = []
+
+            for question in questions:
+                response_data.append({
+                    "Username": username,
+                    "Question": question["Question"],
+                    "Selected Answer": "Not Answered",
+                    "Correct Answer": question.get("Correct Answer", None),
+                    "Is Correct": False
+                })
+
+            # Save to branch-specific file
+            response_file = os.path.join(RESPONSES_DIR, f"{branch}_responses.xlsx")
+            if os.path.exists(response_file):
+                existing_df = pd.read_excel(response_file)
+                new_df = pd.DataFrame(response_data)
+                combined_df = pd.concat([existing_df, new_df], ignore_index=True)
+                combined_df.to_excel(response_file, index=False)
+            else:
+                pd.DataFrame(response_data).to_excel(response_file, index=False)
+
+            print(f"Responses for {username} in branch {branch} auto-submitted.")
+        except Exception as e:
+            print(f"Error during auto-submit: {str(e)}")
+
+    thread = threading.Thread(target=submit_after_timeout)
+    thread.start()
 
 # Route for login
 @app.route("/", methods=["GET", "POST"])
@@ -48,6 +87,7 @@ def login():
         if branch:
             session["username"] = username
             session["branch"] = branch
+            start_timer(username, branch)  # Start the timer for auto-submission
             return redirect(url_for("questions"))
         else:
             flash("Invalid username or password.", "error")
@@ -135,4 +175,3 @@ def download_responses(branch):
     except Exception as e:
         flash(f"Error downloading file for {branch}: {str(e)}", "error")
         return redirect(url_for("login"))
-
