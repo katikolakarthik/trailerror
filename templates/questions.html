@@ -97,54 +97,35 @@
                 <label><input type="radio" name="{{ question['Question'] }}" value="D">  {{ question['Option D'] }}</label>
             </div>
         {% endfor %}
-        <button type="submit">Submit</button>
+        <button type="submit" id="submitButton">Submit</button>
     </form>
 
     <script>
-        // Force Fullscreen Mode
-        function enableFullscreen() {
-            const docEl = document.documentElement;
-            if (docEl.requestFullscreen) {
-                docEl.requestFullscreen();
-            } else if (docEl.mozRequestFullScreen) {
-                docEl.mozRequestFullScreen();
-            } else if (docEl.webkitRequestFullscreen) {
-                docEl.webkitRequestFullscreen();
-            } else if (docEl.msRequestFullscreen) {
-                docEl.msRequestFullscreen();
-            }
-        }
+        // Allow clicks only on specific elements (radio buttons and submit button)
+        document.addEventListener("click", function (event) {
+            const allowedElements = ["INPUT", "BUTTON"];
+            const allowedTypes = ["radio", "submit"];
 
-        // Monitor Visibility State (to detect tab switch)
-        document.addEventListener("visibilitychange", function () {
-            if (document.hidden) {
-                alert("Tab switching is not allowed. Your exam will be submitted.");
-                document.getElementById('questionsForm').submit();
+            if (
+                !allowedElements.includes(event.target.tagName) || 
+                (event.target.tagName === "INPUT" && !allowedTypes.includes(event.target.type))
+            ) {
+                event.preventDefault(); // Block the click
+                event.stopPropagation(); // Stop event bubbling
             }
         });
 
-        // Disable Right-Click
-        document.addEventListener("contextmenu", (e) => e.preventDefault());
-
-        // Disable Keyboard Shortcuts
-        document.addEventListener("keydown", (e) => {
-            // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
-            if (e.key === "F12" || (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key))) {
-                e.preventDefault();
-            }
-            // Disable Ctrl+T, Ctrl+W, Ctrl+R
-            if (e.ctrlKey && ["T", "W", "R"].includes(e.key)) {
-                e.preventDefault();
-            }
+        // Alert on successful submission
+        const form = document.getElementById('questionsForm');
+        form.addEventListener('submit', function (e) {
+            alert("Your responses have been submitted successfully!");
         });
 
-        // Prevent Navigation
-        window.onbeforeunload = function () {
-            return "You cannot leave the exam before submission!";
-        };
-
-        // Enable fullscreen on load
-        enableFullscreen();
+        // Disable right-click
+        document.addEventListener("contextmenu", function (e) {
+            e.preventDefault();
+        });
     </script>
 </body>
 </html>
+
