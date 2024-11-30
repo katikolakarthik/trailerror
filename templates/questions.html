@@ -101,37 +101,7 @@
     </form>
 
     <script>
-        // Disable back button
-        history.pushState(null, null, location.href);
-        window.onpopstate = function () {
-            history.pushState(null, null, location.href);
-        };
-
-        // Disable right-click
-        document.addEventListener('contextmenu', (e) => e.preventDefault());
-
-        // Disable keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
-            if (e.key === "F12" || (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key))) {
-                e.preventDefault();
-            }
-            // Disable Ctrl+T, Ctrl+W, Ctrl+R
-            if (e.ctrlKey && ["T", "W", "R"].includes(e.key)) {
-                e.preventDefault();
-            }
-            // Disable Alt+Tab and other navigation keys
-            if (e.altKey || e.metaKey) {
-                e.preventDefault();
-            }
-        });
-
-        // Prevent page exit
-        window.onbeforeunload = function () {
-            return "You cannot leave the exam before submission!";
-        };
-
-        // Auto Fullscreen
+        // Force Fullscreen Mode
         function enableFullscreen() {
             const docEl = document.documentElement;
             if (docEl.requestFullscreen) {
@@ -145,8 +115,36 @@
             }
         }
 
+        // Monitor Visibility State (to detect tab switch)
+        document.addEventListener("visibilitychange", function () {
+            if (document.hidden) {
+                alert("Tab switching is not allowed. Your exam will be submitted.");
+                document.getElementById('questionsForm').submit();
+            }
+        });
+
+        // Disable Right-Click
+        document.addEventListener("contextmenu", (e) => e.preventDefault());
+
+        // Disable Keyboard Shortcuts
+        document.addEventListener("keydown", (e) => {
+            // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+            if (e.key === "F12" || (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key))) {
+                e.preventDefault();
+            }
+            // Disable Ctrl+T, Ctrl+W, Ctrl+R
+            if (e.ctrlKey && ["T", "W", "R"].includes(e.key)) {
+                e.preventDefault();
+            }
+        });
+
+        // Prevent Navigation
+        window.onbeforeunload = function () {
+            return "You cannot leave the exam before submission!";
+        };
+
+        // Enable fullscreen on load
         enableFullscreen();
     </script>
 </body>
 </html>
-
