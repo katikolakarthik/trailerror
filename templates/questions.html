@@ -25,13 +25,6 @@
             margin-bottom: 20px;
         }
 
-        .timer {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #FFD700;
-            margin-bottom: 20px;
-        }
-
         form {
             background: rgba(255, 255, 255, 0.9);
             padding: 20px;
@@ -97,8 +90,7 @@
 </head>
 <body>
     <h1>Answer All The Questions</h1>
-    <div class="timer" id="timer">Time Remaining: 5:00</div>
-    <form method="post" id="questionsForm" onsubmit="return validateForm()"> 
+    <form method="post" id="questionsForm"> 
         {% for question in questions %}
             <div class="question-container">
                 <span class="question-number">{{ loop.index }}</span>
@@ -113,51 +105,40 @@
     </form>
 
     <script>
-        // Timer functionality
-        let timerSeconds = 60; // 5 minutes
-        const timerElement = document.getElementById('timer');
+        // Disable back button
+        history.pushState(null, null, location.href);
+        window.onpopstate = function () {
+            history.pushState(null, null, location.href);
+        };
 
-        function startTimer() {
-            const interval = setInterval(() => {
-                const minutes = Math.floor(timerSeconds / 60);
-                const seconds = timerSeconds % 60;
-                timerElement.textContent = `Time Remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-                timerSeconds--;
+        // Disable right-click
+        document.addEventListener('contextmenu', (e) => e.preventDefault());
 
-                if (timerSeconds < 0) {
-                    clearInterval(interval);
-                    alert('Time is up! Submitting your responses automatically.');
-                    document.getElementById('questionsForm').submit();
-                }
-            }, 1000);
-        }
-
-        startTimer();
-
-        // Validation to ensure all questions are answered
-        function validateForm() {
-            const form = document.getElementById('questionsForm');
-            const inputs = form.querySelectorAll('input[type="radio"]');
-            const questions = {};
-
-            // Collect selected answers
-            inputs.forEach(input => {
-                if (input.checked) {
-                    questions[input.name] = true;
-                }
-            });
-
-            // Ensure every question has an answer
-            const unanswered = Array.from(form.querySelectorAll('span.question')).filter(q => !questions[q.textContent]);
-            if (unanswered.length > 0) {
-                alert('Please answer all the questions before submitting.');
-                return false;
+        // Disable keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+            if (e.key === "F12" || (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key))) {
+                e.preventDefault();
             }
+            // Disable Ctrl+T, Ctrl+W, Ctrl+R
+            if (e.ctrlKey && ["T", "W", "R"].includes(e.key)) {
+                e.preventDefault();
+            }
+            // Disable Alt+Tab
+            if (e.altKey && e.key === "Tab") {
+                e.preventDefault();
+            }
+        });
 
-            // Show success alert
-            alert('Exam submitted successfully!');
-            return true;
-        }
+        // Fullscreen mode
+        document.documentElement.requestFullscreen().catch((err) => {
+            console.warn("Fullscreen mode is not supported:", err.message);
+        });
+
+        // Prevent page exit
+        window.onbeforeunload = function () {
+            return "You cannot leave the exam before submission!";
+        };
     </script>
 </body>
 </html>
