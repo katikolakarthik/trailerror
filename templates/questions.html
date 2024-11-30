@@ -34,10 +34,6 @@
             max-width: 800px;
         }
 
-        form div {
-            margin-bottom: 15px;
-        }
-
         .question-container {
             margin-bottom: 15px;
         }
@@ -124,21 +120,33 @@
             if (e.ctrlKey && ["T", "W", "R"].includes(e.key)) {
                 e.preventDefault();
             }
-            // Disable Alt+Tab
-            if (e.altKey && e.key === "Tab") {
+            // Disable Alt+Tab and other navigation keys
+            if (e.altKey || e.metaKey) {
                 e.preventDefault();
             }
-        });
-
-        // Fullscreen mode
-        document.documentElement.requestFullscreen().catch((err) => {
-            console.warn("Fullscreen mode is not supported:", err.message);
         });
 
         // Prevent page exit
         window.onbeforeunload = function () {
             return "You cannot leave the exam before submission!";
         };
+
+        // Auto Fullscreen
+        function enableFullscreen() {
+            const docEl = document.documentElement;
+            if (docEl.requestFullscreen) {
+                docEl.requestFullscreen();
+            } else if (docEl.mozRequestFullScreen) {
+                docEl.mozRequestFullScreen();
+            } else if (docEl.webkitRequestFullscreen) {
+                docEl.webkitRequestFullscreen();
+            } else if (docEl.msRequestFullscreen) {
+                docEl.msRequestFullscreen();
+            }
+        }
+
+        enableFullscreen();
     </script>
 </body>
 </html>
+
