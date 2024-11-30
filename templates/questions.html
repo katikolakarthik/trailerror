@@ -17,12 +17,18 @@
             justify-content: flex-start;
             min-height: 100vh;
             padding: 20px;
-            overflow: hidden;
         }
 
         h1 {
             color: #FFD700;
             text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #FFD700;
             margin-bottom: 20px;
         }
 
@@ -33,6 +39,10 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
             width: 90%;
             max-width: 800px;
+        }
+
+        form div {
+            margin-bottom: 15px;
         }
 
         .question-container {
@@ -87,7 +97,8 @@
 </head>
 <body>
     <h1>Answer All The Questions</h1>
-    <form method="post" id="questionsForm">
+    <div class="timer" id="timer">Time Remaining: 5:00</div>
+    <form method="post" id="questionsForm" onsubmit="return validateForm()"> 
         {% for question in questions %}
             <div class="question-container">
                 <span class="question-number">{{ loop.index }}</span>
@@ -98,54 +109,55 @@
                 <label><input type="radio" name="{{ question['Question'] }}" value="D">  {{ question['Option D'] }}</label>
             </div>
         {% endfor %}
-        <button type="submit" id="submitButton">Submit</button>
+        <button type="submit">Submit</button>
     </form>
 
     <script>
-        // Function to request full-screen mode
-        function openFullscreen() {
-            const docEl = document.documentElement;
-            if (docEl.requestFullscreen) {
-                docEl.requestFullscreen().catch((err) => {
-                    console.error("Error attempting full-screen:", err);
-                });
-            } else if (docEl.webkitRequestFullscreen) { /* Safari */
-                docEl.webkitRequestFullscreen();
-            } else if (docEl.msRequestFullscreen) { /* IE11 */
-                docEl.msRequestFullscreen();
-            }
+        // Timer functionality
+        let timerSeconds = 300; // 5 minutes
+        const timerElement = document.getElementById('timer');
+
+        function startTimer() {
+            const interval = setInterval(() => {
+                const minutes = Math.floor(timerSeconds / 60);
+                const seconds = timerSeconds % 60;
+                timerElement.textContent = `Time Remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                timerSeconds--;
+
+                if (timerSeconds < 0) {
+                    clearInterval(interval);
+                    alert('Time is up! Submitting your responses automatically.');
+                    document.getElementById('questionsForm').submit();
+                }
+            }, 1000);
         }
 
-        // Disable navigation
-        function disableNavigation() {
-            document.addEventListener("keydown", (e) => {
-                const forbiddenKeys = ["F12", "F11", "Escape", "Control", "Alt"];
-                if (forbiddenKeys.includes(e.key)) {
-                    e.preventDefault();
+        startTimer();
+
+        // Validation to ensure all questions are answered
+        function validateForm() {
+            const form = document.getElementById('questionsForm');
+            const inputs = form.querySelectorAll('input[type="radio"]');
+            const questions = {};
+
+            // Collect selected answers
+            inputs.forEach(input => {
+                if (input.checked) {
+                    questions[input.name] = true;
                 }
             });
 
-            document.addEventListener("contextmenu", (e) => e.preventDefault());
-        }
-
-        // Add event listener to trigger full-screen on page load
-        document.addEventListener("DOMContentLoaded", () => {
-            openFullscreen();
-            disableNavigation();
-        });
-
-        // Exit full-screen mode on submission
-        const form = document.getElementById("questionsForm");
-        form.addEventListener("submit", function () {
-            alert("Your responses have been submitted successfully!");
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.webkitExitFullscreen) { /* Safari */
-                document.webkitExitFullscreen();
-            } else if (document.msExitFullscreen) { /* IE11 */
-                document.msExitFullscreen();
+            // Ensure every question has an answer
+            const unanswered = Array.from(form.querySelectorAll('span.question')).filter(q => !questions[q.textContent]);
+            if (unanswered.length > 0) {
+                alert('Please answer all the questions before submitting.');
+                return false;
             }
-        });
+
+            // Show success alert
+            alert('Exam submitted successfully!');
+            return true;
+        }
     </script>
 </body>
 </html>
