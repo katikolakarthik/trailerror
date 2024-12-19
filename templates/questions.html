@@ -112,7 +112,7 @@
 </head>
 <body>
     <h1>Answer All The Questions</h1>
-    <div class="timer" id="timer">Time Remaining: 5:00</div>
+    <div class="timer" id="timer">Time Remaining: 45:00</div>
     <form method="post" id="questionsForm" onsubmit="return validateForm()"> 
         {% for question in questions %}
             <div class="question-container">
@@ -129,7 +129,7 @@
 
     <script>
         // Timer functionality
-        let timerSeconds = 60; // 5 minutes
+        let timerSeconds = 2700; // 5 minutes
         const timerElement = document.getElementById('timer');
 
         function startTimer() {
