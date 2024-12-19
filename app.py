@@ -15,8 +15,8 @@ submission_status = {}
 
 # Branch-specific configuration
 BRANCH_CONFIG = {
-    "datascience": {"credentials": "datasciencecredentials.xlsx", "questions": "datasciencequestions.xlsx"},
-    "csm": {"credentials": "csmcredentials.xlsx", "questions": "csmquestions.xlsx"},
+    "csd": {"credentials": "csdcredentials.xlsx", "questions": "csequestions.xlsx"},
+    "csm": {"credentials": "csmcredentials.xlsx", "questions": "csequestions.xlsx"},
     "cse": {"credentials": "csecredentials.xlsx", "questions": "csequestions.xlsx"},
     "it": {"credentials": "itcredentials.xlsx", "questions": "itquestions.xlsx"},
     "ece": {"credentials": "ececredentials.xlsx", "questions": "ecequestions.xlsx"},
